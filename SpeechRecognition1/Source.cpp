@@ -24,9 +24,9 @@ LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 char szAppName[] = "TsinghuaYincheng";
 BOOL b_initSR;
 BOOL b_Cmd_Grammar;
-CComPtr<ISpRecoContext>m_cpRecoCtxt;  //”Ô“Ù ∂±≥Ã–ÚΩ”ø⁄
-CComPtr<ISpRecoGrammar>m_cpCmdGramma; // ∂±”Ô∑®
-CComPtr<ISpRecognizer>m_cpRecoEngine; //”Ô“Ù ∂±“˝«Ê
+CComPtr<ISpRecoContext>m_cpRecoCtxt;  //ËØ≠Èü≥ËØÜÂà´Á®ãÂ∫èÊé•Âè£
+CComPtr<ISpRecoGrammar>m_cpCmdGramma; //ËØÜÂà´ËØ≠Ê≥ï
+CComPtr<ISpRecognizer>m_cpRecoEngine; //ËØ≠Èü≥ËØÜÂà´ÂºïÊìé
 
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine, int iCmdShow)
@@ -53,7 +53,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
 	}
 
 	hwnd = CreateWindow(szAppName,
-		TEXT("¥´÷«≤•øÕC/C++—ß‘∫”Ô“Ù ∂±ΩÃ≥Ã"),
+		TEXT("C/C++Â≠¶Èô¢ËØ≠Èü≥ËØÜÂà´ÊïôÁ®ã"),
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
@@ -84,30 +84,30 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 	{
 	case WM_CREATE:
 	{
-		//≥ı ºªØCOM∂Àø⁄
+		//ÂàùÂßãÂåñCOMÁ´ØÂè£
 		::CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
-		//¥¥Ω® ∂±“˝«ÊCOM µ¿˝Œ™π≤œÌ–Õ
+		//ÂàõÂª∫ËØÜÂà´ÂºïÊìéCOMÂÆû‰æã‰∏∫ÂÖ±‰∫´Âûã
 		HRESULT hr = m_cpRecoEngine.CoCreateInstance(CLSID_SpSharedRecognizer);
-		//¥¥Ω® ∂±…œœ¬ŒƒΩ”ø⁄
+		//ÂàõÂª∫ËØÜÂà´‰∏ä‰∏ãÊñáÊé•Âè£
 		if (SUCCEEDED(hr))
 		{
 			hr = m_cpRecoEngine->CreateRecoContext(&m_cpRecoCtxt);
 		}
 		else MessageBox(hwnd, TEXT("error1"), TEXT("error"), S_OK);
-		//…Ë÷√ ∂±œ˚œ¢, πº∆À„ª˙ ±øÃº‡Ã˝”Ô“Ùœ˚œ¢
+		//ËÆæÁΩÆËØÜÂà´Ê∂àÊÅØ,‰ΩøËÆ°ÁÆóÊú∫Êó∂ÂàªÁõëÂê¨ËØ≠Èü≥Ê∂àÊÅØ
 		if (SUCCEEDED(hr))
 		{
 			hr = m_cpRecoCtxt->SetNotifyWindowMessage(hwnd, WM_RECOEVENT, 0, 0);
 		}
 		else MessageBox(hwnd, TEXT("error2"), TEXT("error"), S_OK);
-		//…Ë÷√Œ“√«∏––À»§µƒ ¬º˛
+		//ËÆæÁΩÆÊàë‰ª¨ÊÑüÂÖ¥Ë∂£ÁöÑ‰∫ã‰ª∂
 		if (SUCCEEDED(hr))
 		{
 			ULONGLONG ullMyEvents = SPFEI(SPEI_SOUND_START) | SPFEI(SPEI_RECOGNITION) | SPFEI(SPEI_SOUND_END);
 			hr = m_cpRecoCtxt->SetInterest(ullMyEvents, ullMyEvents);
 		}
 		else MessageBox(hwnd, TEXT("error3"), TEXT("error"), S_OK);
-		//¥¥Ω®”Ô∑®πÊ‘Ú
+		//ÂàõÂª∫ËØ≠Ê≥ïËßÑÂàô
 		b_Cmd_Grammar = TRUE;
 		if (FAILED(hr))
 		{
@@ -122,7 +122,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 			MessageBox(hwnd, TEXT("error5"), TEXT("error"), S_OK);
 		}
 		b_initSR = TRUE;
-		//‘⁄ø™ º ∂± ±£¨º§ªÓ”Ô∑®Ω¯–– ∂±
+		//Âú®ÂºÄÂßãËØÜÂà´Êó∂ÔºåÊøÄÊ¥ªËØ≠Ê≥ïËøõË°åËØÜÂà´
 		hr = m_cpCmdGramma->SetRuleState(NULL, NULL, SPRS_ACTIVE);
 		return 0;
 	}
@@ -141,7 +141,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 			{
 				static const WCHAR wszUnrecognized[] = L"<Unrecognized>";
 				CSpDynamicString dstrText;
-				//»°µ√ ∂±Ω·π˚
+				//ÂèñÂæóËØÜÂà´ÁªìÊûú
 				if (FAILED(event.RecoResult()->GetText(SP_GETWHOLEPHRASE, SP_GETWHOLEPHRASE, TRUE, &dstrText, NULL)))
 				{
 					dstrText = wszUnrecognized;
@@ -152,63 +152,63 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT message, WPARAM wParam, LPARAM lParam)
 
 				if (b_Cmd_Grammar)
 				{
-					if (strstr("◊Û“∆", lpszText2) != NULL)
+					if (strstr("Â∑¶Áßª", lpszText2) != NULL)
 					{
 						keybd_event(VK_LEFT,0,0,0);
 						Sleep(500);
 						keybd_event(VK_LEFT, 0, KEYEVENTF_KEYUP, 0);
-						DrawText(hdc, TEXT("◊Û“∆"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+						DrawText(hdc, TEXT("Â∑¶Áßª"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
 					}
 					
-					if (strstr("”““∆", lpszText2) != NULL)
+					if (strstr("Âè≥Áßª", lpszText2) != NULL)
 					{
 						keybd_event(VK_RIGHT, 0, 0, 0);
 						Sleep(500);
 						keybd_event(VK_RIGHT, 0, KEYEVENTF_KEYUP, 0);
-						DrawText(hdc, TEXT("”““∆"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+						DrawText(hdc, TEXT("Âè≥Áßª"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
 					}
 
-					if (strstr("∂◊œ¬", lpszText2) != NULL)
+					if (strstr("Ëπ≤‰∏ã", lpszText2) != NULL)
 					{
 						keybd_event(VK_DOWN, 0, 0, 0);
 						Sleep(500);
 						keybd_event(VK_DOWN, 0, KEYEVENTF_KEYUP, 0);
-						DrawText(hdc, TEXT("∂◊œ¬"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+						DrawText(hdc, TEXT("Ëπ≤‰∏ã"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
 					}
 
-					if (strstr("Ã¯", lpszText2) != NULL)
+					if (strstr("Ë∑≥", lpszText2) != NULL)
 					{
 						keybd_event(VK_UP, 0, 0, 0);
 						Sleep(100);
 						keybd_event(VK_UP, 0, KEYEVENTF_KEYUP, 0);
-						DrawText(hdc, TEXT("Ã¯"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+						DrawText(hdc, TEXT("Ë∑≥"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
 					}
 
-					if (strstr("”“…œ", lpszText2) != NULL)
+					if (strstr("Âè≥‰∏ä", lpszText2) != NULL)
 					{
 						keybd_event(VK_RIGHT, 0, 0, 0);
 						keybd_event(VK_UP, 0, 0, 0);
 						Sleep(500);
 						keybd_event(VK_RIGHT, 0, KEYEVENTF_KEYUP, 0);
 						keybd_event(VK_UP, 0, KEYEVENTF_KEYUP, 0);
-						DrawText(hdc, TEXT("”“…œ"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+						DrawText(hdc, TEXT("Âè≥‰∏ä"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
 					}
 					
-					if (strstr("◊Û…œ", lpszText2) != NULL)
+					if (strstr("Â∑¶‰∏ä", lpszText2) != NULL)
 					{
 						keybd_event(VK_LEFT, 0, 0, 0);
 						keybd_event(VK_UP, 0, 0, 0);
 						Sleep(500);
 						keybd_event(VK_LEFT, 0, KEYEVENTF_KEYUP, 0);
 						keybd_event(VK_UP, 0, KEYEVENTF_KEYUP, 0);
-						DrawText(hdc, TEXT("◊Û…œ"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+						DrawText(hdc, TEXT("Â∑¶‰∏ä"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
 					}
 
-					if (strstr("π•ª˜", lpszText2) != NULL)
+					if (strstr("ÊîªÂáª", lpszText2) != NULL)
 					{
 						keybd_event(VK_SPACE, 0, 0, 0);
 						keybd_event(VK_SPACE, 0, KEYEVENTF_KEYUP, 0);
-						DrawText(hdc, TEXT("π•ª˜"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
+						DrawText(hdc, TEXT("ÊîªÂáª"), -1, &rect, DT_SINGLELINE | DT_CENTER | DT_VCENTER);
 					}
 				}
 			}
