@@ -21,7 +21,7 @@
 
 LRESULT CALLBACK WndProc(HWND, UINT, WPARAM, LPARAM);
 
-char szAppName[] = "TsinghuaYincheng";
+char szAppName[] = "jiaocheng";
 BOOL b_initSR;
 BOOL b_Cmd_Grammar;
 CComPtr<ISpRecoContext>m_cpRecoCtxt;  //语音识别程序接口
@@ -53,7 +53,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR szCmdLine,
 	}
 
 	hwnd = CreateWindow(szAppName,
-		TEXT("C/C++学院语音识别教程"),
+		TEXT("语音识别教程"),
 		WS_OVERLAPPEDWINDOW,
 		CW_USEDEFAULT,
 		CW_USEDEFAULT,
